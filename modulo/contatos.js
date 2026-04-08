@@ -1,3 +1,14 @@
+/****************************************************************************************
+ * Objetivo: Criar um arquivo JSON para armazenar os dados de contatos do projeto de WhatsApp Web
+ * Autor: Pedro Rodrigues
+ * data: 08/04/2026
+ * versao: 1.0
+ ****************************************************************************************/
+
+
+
+
+
 export const contatos = { "whats-users" :
                           [
                             {  
@@ -568,3 +579,7 @@ export const contatos = { "whats-users" :
                             }
                           ]
                         }
+                        
+
+                        
+
