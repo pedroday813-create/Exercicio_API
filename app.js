@@ -141,7 +141,7 @@ app.get('/v1/whatsapp/usuario/:numero', function (request, response) {
     response.status(200).json(conversaContato)
 })
 
-app.get('v1/senai/help', function(request, response) {
+const enviarHelpAPI = function (request, response) {
     let docAPI = {
         "API-description": "API do Watsapp para busca de conversas e contatos de usuarios",
         "date": "2026-04-13",
@@ -175,13 +175,21 @@ app.get('v1/senai/help', function(request, response) {
             },
             {
                 "id": 6,
-                "Rota 6": "/v1/senai/Watsapp",
-                "obs": "retorna a lista de contatos de todos os usuarios"}
+                "Rota 6": "/v1/senai/help",
+                "obs": "retorna a documentacao da API"
+            },
+            {
+                "id": 7,
+                "Rota 7": "/v1/whatsapp/help",
+                "obs": "retorna a documentacao da API"
+            }
         ]
     }
-    reponsse.status(200)
-    reponse.json(docAPI)
-})
+    response.status(200).json(docAPI)
+}
+
+app.get('/v1/senai/help', enviarHelpAPI)
+app.get('/v1/whatsapp/help', enviarHelpAPI)
 
 
 app.listen(porta, function () {
