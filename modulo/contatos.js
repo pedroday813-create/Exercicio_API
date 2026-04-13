@@ -9,7 +9,7 @@
 
 
 
-export const contatos = { "whats-users" :
+const contatos = { "whats-users" :
                           [
                             {  
                               "id" : 1,    
@@ -579,7 +579,8 @@ export const contatos = { "whats-users" :
                             }
                           ]
                         }
-                        
 
-                        
+module.exports = {
+    contatos
+}
 

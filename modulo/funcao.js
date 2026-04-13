@@ -5,9 +5,17 @@
  * versao: 1.0
  ****************************************************************/
 
-import { contatos } from './contatos.js'
+const { contatos } = require('./contatos.js')
 
 const listaUsuarios = contatos['whats-users']
+
+const normalizarTextoBusca = function (texto) {
+    return String(texto)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase()
+}
 
 const numeroEhValido = function (numero) {
     return /^[0-9]{10,11}$/.test(String(numero))
@@ -16,6 +24,39 @@ const numeroEhValido = function (numero) {
 const manipularContatos = function () {
     return listaUsuarios.length
 }
+
+const montarMensagens = function (mensagensContato) {
+    let mensagens = Array.isArray(mensagensContato) ? mensagensContato : []
+
+    return mensagens.map(function (mensagem) {
+        return {
+            sender: mensagem.sender,
+            content: mensagem.content,
+            time: mensagem.time
+        }
+    })
+}
+
+const montarConversaContato = function (contato) {
+    let mensagensContato = montarMensagens(contato.messages)
+
+    return {
+        name: contato.name,
+        description: contato.description,
+        image: contato.image,
+        messages: mensagensContato,
+        nome: contato.name,
+        descricao: contato.description,
+        imagem: contato.image,
+        mensagens: mensagensContato,
+        conversa: mensagensContato
+    }
+}
+
+
+
+
+
 
 // Listar todos os dados de contato de todos os usuarios
 const getTodosDados = function () {
@@ -47,7 +88,10 @@ const getDadosUsuario = function (numero) {
                 imagemPerfil: usuario['profile-image'],
                 numero: usuario.number,
                 corDeFundo: usuario.background,
-                membroDesde: usuario['created-since']
+                membroDesde: usuario['created-since'],
+                conversas: usuario.contacts.map(function (contato) {
+                    return montarConversaContato(contato)
+                })
             }
         }
     })
@@ -85,16 +129,7 @@ const getConversas = function (numero) {
             listaConversas = []
 
             usuario.contacts.forEach(function (contato) {
-                listaConversas.push({
-                    nome: contato.name,
-                    conversa: contato.messages.map(function (mensagem) {
-                        return {
-                            sender: mensagem.sender,
-                            content: mensagem.content,
-                            time: mensagem.time
-                        }
-                    })
-                })
+                listaConversas.push(montarConversaContato(contato))
             })
         }
     })
@@ -109,17 +144,11 @@ const getConversaUsuarioContato = function (numero, nomeContato) {
     listaUsuarios.forEach(function (usuario) {
         if (usuario.number === numero) {
             usuario.contacts.forEach(function (contato) {
-                if (contato.name.toLowerCase() === nomeContato.toLowerCase()) {
+                if (normalizarTextoBusca(contato.name) === normalizarTextoBusca(nomeContato)) {
                     conversaEncontrada = {
                         nome: contato.name,
                         numeroCelular: usuario.number,
-                        conversa: contato.messages.map(function (mensagem) {
-                            return {
-                                sender: mensagem.sender,
-                                content: mensagem.content,
-                                time: mensagem.time
-                            }
-                        })
+                        conversas: montarMensagens(contato.messages)
                     }
                 }
             })
@@ -129,9 +158,7 @@ const getConversaUsuarioContato = function (numero, nomeContato) {
     return conversaEncontrada
 }
 
-console.log(getDadosUsuario);
-
-export {
+module.exports = {
     manipularContatos,
     getTodosDados,
     getDadosUsuario,
