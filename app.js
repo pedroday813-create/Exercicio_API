@@ -141,6 +141,49 @@ app.get('/v1/whatsapp/usuario/:numero', function (request, response) {
     response.status(200).json(conversaContato)
 })
 
+app.get('v1/senai/help', function(request, response) {
+    let docAPI = {
+        "API-description": "API do Watsapp para busca de conversas e contatos de usuarios",
+        "date": "2026-04-13",
+        "Developer": "Pedro Rodrigues",
+        "version": "1.0",
+        "endpoints": [
+            {
+                "id": 1,
+                "Rota 1": "/v1/whatsapp/contatos",
+                "obs": "retorna a lista de contatos de todos os usuarios"
+            },
+            {
+                "id": 2,
+                "Rota 2": "/v1/whatsapp/usuario/:numero/contatos",
+                "obs": "retorna a lista de contatos de um usuario filtrando pelo numero do usuario"
+            },
+            {
+                "id": 3,
+                "Rota 3": "/v1/whatsapp/mensagens/contato/:numero",
+                "obs": "(Retornar apenas os dados pessoais de cada contato do usuário, como nome, foto e descrição"
+            },
+            {
+                "id": 4,
+                "Rota 4": "/v1/whatsapp/usuario/contatos",
+                "obs": "retorna a lista de contatos de um usuario filtrando pelo numero do usuario utilizando query ?numero=numero-do-usuario"
+            },
+            {
+                "id": 5,
+                "Rota 5": "/v1/whatsapp/usuario/:numero?referencia=nome-do-contato",
+                "obs": "retorna a conversa entre o usuario e um contato filtrando pelo numero do usuario e pela referencia do contato utilizando query ?referencia=nome-do-contato"
+            },
+            {
+                "id": 6,
+                "Rota 6": "/v1/senai/Watsapp",
+                "obs": "retorna a lista de contatos de todos os usuarios"}
+        ]
+    }
+    reponsse.status(200)
+    reponse.json(docAPI)
+})
+
+
 app.listen(porta, function () {
     console.log(`API aguardando requisicoes na porta ${porta}.`)
 })
